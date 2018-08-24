@@ -6,8 +6,11 @@
 
 #define HIJO 0
 int main(int argc, char *argv[]){
-    int prueba = 1, i = 0;
-    int usoCPU, file;
+    int prueba = 1, i = 0, j = 0;
+    int usoCPU;
+    char caracter;
+    char linea[10];
+    FILE *file;
 
     const char logs_file[] = "log.txt";
     while(prueba){
@@ -23,14 +26,28 @@ int main(int argc, char *argv[]){
             prueba = 0;
 
 
-        sleep(10);
-        //decidir
-        if( (file = open(logs_file, O_RDONLY)) == -1) exit(-1);
+        sleep(20);
         
-        printf("CPU %d \n", usoCPU);
-        sleep(10);
+        if( (file = fopen(logs_file, "r")) == NULL){
+            perror(logs_file);
+            exit(-1);
+        }
+        j = 0;
+        fseek(file, -5, SEEK_END);
+        fread(&caracter, sizeof(char), 1, file);
+        do{
+            if(caracter != '\n' && caracter !='.'){
+                linea[j] = caracter;
+                j++;
+            }
+            fread(&caracter, sizeof(char), 1, file); 
+        }while(caracter != '\n' && caracter != '.' && caracter != EOF);
+        linea[j] = '\0';
+
+        printf("CPU %s\n", linea);
+        //sleep(10);
     }
 
-
+    fclose(file);
     return 0;
 }
