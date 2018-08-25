@@ -27,17 +27,8 @@ int main(int argc, char *argv[]){
         
         
         usoCPU = read_last_line_from_log(file);
-        printf("CPU %d\n", usoCPU);
-        if(usoCPU < 5)
-            set_governor(POWERSAVE);
-        else if(usoCPU < 90){
-            set_governor(USERSPACE);
-            if(usoCPU < 20)
-                set_frequency(UNO_CINCO_GHZ);
-            else
-                set_frequency(DOS_GHZ);
-        }else
-            set_governor(ONDEMAND);
+        //printf("CPU %d\n", usoCPU);
+        run_decisions_model(usoCPU);
 
 
         if (i < 2)

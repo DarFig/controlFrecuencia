@@ -8,7 +8,12 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#define SALTO_ATRAS -3
+#define L_DOWN 5
+#define L_MEDIUM 20
+#define L_UP 90
+
+
+#define SALTO_ATRAS -3 
 #define HIJO 0
 
 //some governors in linux
@@ -116,6 +121,24 @@ void set_frequency(int _frequencyFlag){
     }
 }
 
+void run_decisions_model(int cpu_usage){
+    //ahora mismo es muy simple requiere pruebas
+    //hay que tener en cuenta que el % que obtenemos
+    //es relativo al modo o la frecuencia de trabajo
+    //no al total del sistema
 
+    if(cpu_usage < L_DOWN){
+        //set_governor(POWERSAVE);
+        set_governor(USERSPACE);
+        set_frequency(UN_GHZ);
+    }else if(cpu_usage < L_UP){
+        set_governor(USERSPACE);
+        if(cpu_usage < L_MEDIUM)
+            set_frequency(UNO_CINCO_GHZ);
+        else
+            set_frequency(DOS_GHZ);
+    }else
+        set_governor(ONDEMAND);
+}
 
 #endif
