@@ -60,7 +60,7 @@ void set_governor(int _governorFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);}
+                execl("./tools/powersave.sh", "",NULL); exit(0);}
             
             sleep(2); 
         }else
@@ -68,7 +68,7 @@ void set_governor(int _governorFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);}
+                execl("./tools/userspace.sh", "",NULL); exit(0);}
             
             sleep(2);
         }else
@@ -76,7 +76,7 @@ void set_governor(int _governorFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);}
+                execl("./tools/ondemand.sh", "",NULL); exit(0);}
             
             sleep(2);
         }else
@@ -84,7 +84,7 @@ void set_governor(int _governorFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);} 
+                execl("./tools/performance.sh", "",NULL); exit(0);} 
             sleep(2);     
         }
         actualGovernor = _governorFlag;
@@ -97,7 +97,7 @@ void set_frequency(int _frequencyFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);
+                execl("./tools/unghz.sh", "",NULL); exit(0);
             }
             sleep(1);
         }else
@@ -105,7 +105,7 @@ void set_frequency(int _frequencyFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);
+                execl("./tools/unoconcincoghz.sh", "",NULL); exit(0);
             }
             sleep(1);
         }else
@@ -113,7 +113,7 @@ void set_frequency(int _frequencyFlag){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
-                execl("ls", "",NULL); exit(0);
+                execl("./tools/dosghz.sh", "",NULL); exit(0);
             }
             sleep(1);
         }
