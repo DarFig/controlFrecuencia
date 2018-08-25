@@ -1,6 +1,6 @@
 #include "../include/utils.h"
 
-#define HIJO 0
+
 int main(int argc, char *argv[]){
     int prueba = 1, i = 0; 
     int usoCPU;
@@ -17,21 +17,29 @@ int main(int argc, char *argv[]){
         
         int pid = fork();
         if (pid < 0) exit(1);
-        if(pid == HIJO) execl("./tools/obtenerUso.sh", "",NULL);
+        if(pid == HIJO){ execl("./tools/obtenerUso.sh", "",NULL); exit(0);}
         
         //main process
-        if (i < 2)
-            i++;
-        else
-            prueba = 0;
+        
 
 
-        sleep(20);
+        sleep(15);
         
         
         usoCPU = read_last_line_from_log(file);
         printf("CPU %d\n", usoCPU);
-        
+        if(usoCPU < 10)
+            set_governor(POWERSAVE);
+        else if(usoCPU < 90)
+            set_governor(USERSPACE);
+        else
+            set_governor(ONDEMAND);
+
+
+        if (i < 2)
+            i++;
+        else
+            prueba = 0;
         //sleep(10);
     }
 

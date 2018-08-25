@@ -8,7 +8,18 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#define SALTO_ATRAS -5
+#define SALTO_ATRAS -3
+#define HIJO 0
+
+//some governors in linux
+enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, HIGHPERFORMANCE = 3};
+
+//some cpu frequencies
+enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3};
+
+static int actualGovernor = ONDEMAND;
+
+
 
 int is_not_end_line(char caracter){
     return (caracter != '\n' && caracter != '.' && caracter != EOF);
@@ -37,6 +48,48 @@ int read_last_line_from_log(FILE* file){
     return atoi(linea);
 }
 
+void set_governor(int _governorFlag){
+    if(actualGovernor != _governorFlag){
+        if(_governorFlag == POWERSAVE){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "",NULL); exit(0);}
+            
+            sleep(2); 
+        }else
+        if(_governorFlag == USERSPACE){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);}
+            
+            sleep(2);
+        }else
+        if(_governorFlag == ONDEMAND){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);}
+            
+            sleep(2);
+        }else
+        if(_governorFlag == ONDEMAND){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);} 
+            sleep(2);     
+        }
+        actualGovernor = _governorFlag;
+    }else{
+        sleep(2);
+    }
+}
+
+void set_frecuency(int _frequencyFlag){
+
+}
 
 
 
