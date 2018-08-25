@@ -15,9 +15,10 @@
 enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, HIGHPERFORMANCE = 3};
 
 //some cpu frequencies
-enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3};
+enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3, OTHER = 4};
 
 static int actualGovernor = ONDEMAND;
+static int actualFfrequency = OTHER;
 
 
 
@@ -82,13 +83,39 @@ void set_governor(int _governorFlag){
             sleep(2);     
         }
         actualGovernor = _governorFlag;
-    }else{
-        sleep(2);
     }
 }
 
-void set_frecuency(int _frequencyFlag){
-
+void set_frequency(int _frequencyFlag){
+    if(actualFfrequency != _frequencyFlag){
+        if(_frequencyFlag == UN_GHZ){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);
+            }
+            sleep(1);
+            printf("uno\n");
+        }else
+        if(_frequencyFlag == UNO_CINCO_GHZ){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);
+            }
+            sleep(1);
+            printf("uno cinco\n");
+        }else
+        if(_frequencyFlag == DOS_GHZ){
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("ls", "-la",NULL); exit(0);
+            }
+            printf("tres\n");
+            sleep(1);
+        }
+    }
 }
 
 
