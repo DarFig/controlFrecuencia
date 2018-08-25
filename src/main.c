@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "../include/utils.h"
 
 #define HIJO 0
 int main(int argc, char *argv[]){
@@ -7,7 +7,7 @@ int main(int argc, char *argv[]){
 
     FILE *file;
 
-    const char logs_file[] = "log.txt";
+    const char logs_file[] = "../files/log.txt";
     if( (file = fopen(logs_file, "r")) == NULL){
             perror(logs_file);
             exit(-1);
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
         
         int pid = fork();
         if (pid < 0) exit(1);
-        if(pid == HIJO) execl("./obtenerUso.sh", "",NULL);
+        if(pid == HIJO) execl("../tools/obtenerUso.sh", "",NULL);
         
         //main process
         if (i < 2)
