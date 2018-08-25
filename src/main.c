@@ -1,7 +1,15 @@
 #include "../include/utils.h"
-
+#include "../include/doSignals.h"
 
 int main(int argc, char *argv[]){
+    
+    //signals time 
+    if(signal(SIGINT, do_SIGINT) == SIG_ERR) {
+        perror("signal");
+        exit(-1);
+    }
+   
+
     int prueba = 1, i = 0; 
     int usoCPU;
 
@@ -13,7 +21,7 @@ int main(int argc, char *argv[]){
             exit(-1);
     }
 
-    while(prueba){
+    while(continuar){
         
         int pid = fork();
         if (pid < 0) exit(1);
@@ -31,13 +39,11 @@ int main(int argc, char *argv[]){
         run_decisions_model(usoCPU);
 
 
-        if (i < 2)
-            i++;
-        else
-            prueba = 0;
-        //sleep(10);
+        
+        
     }
 
     fclose(file);
+    
     return 0;
 }
