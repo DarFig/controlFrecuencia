@@ -17,7 +17,7 @@
 #define HIJO 0
 
 //some governors in linux
-enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, HIGHPERFORMANCE = 3};
+enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, PERFORMANCE = 3};
 
 //some cpu frequencies
 enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3, OTHER = 4};
@@ -80,7 +80,7 @@ void set_governor(int _governorFlag){
             
             sleep(2);
         }else
-        if(_governorFlag == ONDEMAND){
+        if(_governorFlag == PERFORMANCE){
             int pidd = fork();
             if (pidd < 0) exit(1);
             if(pidd == HIJO){ 
