@@ -2,6 +2,10 @@
 
 Service to control the cpu frequency of a server according to the use of the cores.
 
+## System State
+
+![System State](https://github.com/DarFig/controlFrecuencia/state.md)
+
 ## Requirements
 
 - gcc
@@ -27,7 +31,7 @@ Run:
 
 ### Governors Problems
 
-- **not on servers**
+. **not on servers**
 
 If your system is using the new driver called intel_pstate. There are only two governors available when using this driver: powersave and performance.
 
