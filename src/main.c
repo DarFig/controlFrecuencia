@@ -44,6 +44,7 @@ int main(int argc, char *argv[]){
     }
 
     fclose(file);
-    
+    set_governor(ONDEMAND);//default on servers
+
     return 0;
 }
