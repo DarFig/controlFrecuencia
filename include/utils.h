@@ -138,7 +138,7 @@ void switch_cores(){
         int pidd = fork();
         if (pidd < 0) exit(1);
         if(pidd == HIJO){ 
-            execl("./tools/shutdown_cores.sh", "",NULL); exit(0);
+            execl("./tools/up_cores.sh", "",NULL); exit(0);
         }
         sleep(5);
         actualConfig = CORES_ALL;
