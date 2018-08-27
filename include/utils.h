@@ -8,13 +8,16 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#define L_DOWN 5
-#define L_MEDIUM 20
+#define L_DOWN 10
+#define L_MEDIUM 50
 #define L_UP 90
 
 
 #define SALTO_ATRAS -3 
 #define HIJO 0
+
+//configs cres
+enum {CORES_OCHO, CORES_ALL};
 
 //some governors in linux
 enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, PERFORMANCE = 3};
@@ -24,6 +27,7 @@ enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3, OTHER = 4};
 
 static int actualGovernor = ONDEMAND;
 static int actualFrequency = OTHER;
+static int actualConfig = CORES_ALL;
 
 
 
@@ -121,24 +125,52 @@ void set_frequency(int _frequencyFlag){
     }
 }
 
-void run_decisions_model(int cpu_usage){
-    //ahora mismo es muy simple requiere pruebas
-    //hay que tener en cuenta que el % que obtenemos
-    //es relativo al modo o la frecuencia de trabajo
-    //no al total del sistema
+void switch_cores(){
+    if(actualConfig != CORES_OCHO){
+        int pidd = fork();
+        if (pidd < 0) exit(1);
+        if(pidd == HIJO){ 
+            execl("./tools/shutdown_cores.sh", "",NULL); exit(0);
+        }
+        sleep(5);
+        actualConfig = CORES_OCHO;
+    }else{
+        int pidd = fork();
+        if (pidd < 0) exit(1);
+        if(pidd == HIJO){ 
+            execl("./tools/shutdown_cores.sh", "",NULL); exit(0);
+        }
+        sleep(5);
+        actualConfig = CORES_ALL;
+    }
 
-    if(cpu_usage < L_DOWN){
-        //set_governor(POWERSAVE);
-        set_governor(USERSPACE);
-        set_frequency(UN_GHZ);
-    }else if(cpu_usage < L_UP){
-        set_governor(USERSPACE);
-        if(cpu_usage < L_MEDIUM)
-            set_frequency(UNO_CINCO_GHZ);
-        else
-            set_frequency(DOS_GHZ);
-    }else
-        set_governor(ONDEMAND);
 }
+
+void run_decisions_model(int cpu_usage){   
+    if(actualGovernor == USERSPACE){
+        switch (actualFrequency)
+        {
+            case UNO_CINCO_GHZ:
+                
+                break;
+            case DOS:
+                
+                break;
+        
+            default:
+                break;
+        }
+        
+    }else if(actualGovernor == ONDEMAND){
+
+        
+    }else if(actualGovernor == PERFORMANCE){
+
+        
+    }
+   
+
+}
+
 
 #endif
