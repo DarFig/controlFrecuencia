@@ -1,3 +1,4 @@
 #!/bin/bash
 
-cpupower frequency-set --governor performance >> ./files/changes_log.txt
+cpupower frequency-set --governor performance > /dev/null
+echo "performance" >> ./files/changes_log.txt
