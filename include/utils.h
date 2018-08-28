@@ -146,17 +146,17 @@ void switch_cores(){
 
 }
 void run_decisions_uno_cinco(int cpu_usage){
-    if(cpu_usage < 70){
+    if(cpu_usage < 40){
         set_frequency(DOS_GHZ);
         switch_cores();
-    }else if(cpu_usage > 85){
+    }else if(cpu_usage > 59){
         set_frequency(DOS_GHZ);
     }
 }
 void run_decisions_dos(int cpu_usage){
-    if(cpu_usage < 65){
+    if(cpu_usage < 62){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 98){
+    }else if(cpu_usage > 70){
         set_governor(ONDEMAND);
     }
 }
@@ -170,11 +170,11 @@ void run_decisions_ondemand(int cpu_usage){
     if(cpu_usage < 75){
         set_governor(USERSPACE);
         set_frequency(DOS_GHZ);
-    }else if(cpu_usage > 91)
+    }else if(cpu_usage > 89)
         set_governor(PERFORMANCE);
 }
 void run_decisions_performance(int cpu_usage){
-    if(cpu_usage < 89)
+    if(cpu_usage < 85)
         set_governor(ONDEMAND);
 }
 
