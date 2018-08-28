@@ -162,8 +162,8 @@ void run_decisions_dos(int cpu_usage){
 }
 void run_decisions_cores(int cpu_usage){
     if(cpu_usage > 90){
-        set_frequency(UNO_CINCO_GHZ);
         switch_cores();
+        set_frequency(UNO_CINCO_GHZ);
     }        
 }
 void run_decisions_ondemand(int cpu_usage){
