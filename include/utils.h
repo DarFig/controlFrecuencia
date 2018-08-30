@@ -145,8 +145,13 @@ void switch_cores(){
     }
 
 }
+void run_decisions_uno(int cpu_usage){
+    if(cpu_usage > 36){
+        set_frequency(UNO_CINCO_GHZ);
+    } 
+}
 void run_decisions_uno_cinco(int cpu_usage){
-    if(cpu_usage < 40){
+    if(cpu_usage < 35){
         set_frequency(DOS_GHZ);
         switch_cores();
     }else if(cpu_usage > 59){
@@ -154,14 +159,14 @@ void run_decisions_uno_cinco(int cpu_usage){
     }
 }
 void run_decisions_dos(int cpu_usage){
-    if(cpu_usage < 62){
+    if(cpu_usage < 56){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 70){
+    }else if(cpu_usage > 77){
         set_governor(ONDEMAND);
     }
 }
 void run_decisions_cores(int cpu_usage){
-    if(cpu_usage > 90){
+    if(cpu_usage > 36){
         switch_cores();
         set_frequency(UNO_CINCO_GHZ);
     }        
@@ -184,6 +189,9 @@ void run_decisions_model(int cpu_usage){
     }else if(actualGovernor == USERSPACE){
         switch (actualFrequency)
         {   
+            case UN_GHZ:
+                run_decisions_uno(cpu_usage);
+                break;
             case UNO_CINCO_GHZ:
                 run_decisions_uno_cinco(cpu_usage);
                 break;
