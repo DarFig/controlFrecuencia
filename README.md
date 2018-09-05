@@ -6,6 +6,8 @@ Service to control the cpu frequency of a server according to the use of the cor
 
 ![System State](https://github.com/DarFig/controlFrecuencia/blob/master/state.md)
 
+- [ ] Modify steps(%) for frequency changes
+
 ## Requirements
 
 - gcc
