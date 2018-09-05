@@ -8,9 +8,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#define L_DOWN 10
-#define L_MEDIUM 50
-#define L_UP 90
+
 
 
 #define SALTO_ATRAS -3 
@@ -31,10 +29,10 @@ static int actualConfig = CORES_ALL;
 
 
 
-int is_not_end_line(char caracter){
+static int is_not_end_line(char caracter){
     return (caracter != '\n' && caracter != '.' && caracter != EOF);
 }
-int is_not_omitted_caracter(char caracter){
+static int is_not_omitted_caracter(char caracter){
     return (caracter != '\n' && caracter !='.');
 }
 
@@ -145,40 +143,40 @@ void switch_cores(){
     }
 
 }
-void run_decisions_uno(int cpu_usage){
+static void run_decisions_uno(int cpu_usage){
     if(cpu_usage > 36){
         set_frequency(UNO_CINCO_GHZ);
     } 
 }
-void run_decisions_uno_cinco(int cpu_usage){
+static void run_decisions_uno_cinco(int cpu_usage){
     if(cpu_usage < 35){
         set_frequency(DOS_GHZ);
         switch_cores();
-    }else if(cpu_usage > 59){
+    }else if(cpu_usage > 96){
         set_frequency(DOS_GHZ);
     }
 }
-void run_decisions_dos(int cpu_usage){
+static void run_decisions_dos(int cpu_usage){
     if(cpu_usage < 56){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 77){
+    }else if(cpu_usage > 77){//bueno
         set_governor(ONDEMAND);
     }
 }
-void run_decisions_cores(int cpu_usage){
-    if(cpu_usage > 36){
+static void run_decisions_cores(int cpu_usage){
+    if(cpu_usage > 90){
         switch_cores();
         set_frequency(UNO_CINCO_GHZ);
     }        
 }
-void run_decisions_ondemand(int cpu_usage){
+static void run_decisions_ondemand(int cpu_usage){
     if(cpu_usage < 75){
         set_governor(USERSPACE);
         set_frequency(DOS_GHZ);
-    }else if(cpu_usage > 89)
-        set_governor(PERFORMANCE);
+    }//else if(cpu_usage > 89)
+      //  set_governor(PERFORMANCE);
 }
-void run_decisions_performance(int cpu_usage){
+static void run_decisions_performance(int cpu_usage){
     if(cpu_usage < 85)
         set_governor(ONDEMAND);
 }
