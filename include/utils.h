@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+#include "../include/define_limits.h"
 
 
 
@@ -153,38 +154,38 @@ void switch_cores(){
 
 }
 static void run_decisions_uno(int cpu_usage){
-    if(cpu_usage > 36){
+    if(cpu_usage > UP_ONE){
         set_frequency(UNO_CINCO_GHZ);
     } 
 }
 static void run_decisions_uno_cinco(int cpu_usage){
-    if(cpu_usage < 10){       
+    if(cpu_usage < DOWN_ONE_FIVE){       
         switch_cores();
-    }else if(cpu_usage > 85){
+    }else if(cpu_usage > UP_ONE_FIVE){
         set_frequency(DOS_GHZ);
     } 
 }
 static void run_decisions_dos(int cpu_usage){
-    if(cpu_usage < 40){
+    if(cpu_usage < DOWN_DOS){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 98){
+    }else if(cpu_usage > UP_DOS){
         set_governor(ONDEMAND);
     }
 }
 static void run_decisions_cores(int cpu_usage){
-    if(cpu_usage > 80){
+    if(cpu_usage > UP_CORES){
         switch_cores();
         
     }        
 }
 static void run_decisions_ondemand(int cpu_usage){
-    if(cpu_usage < 75){
+    if(cpu_usage < DOWN_ONDEMAND){
         set_governor(USERSPACE);
         set_frequency(DOS_GHZ);
     }
 }
 static void run_decisions_performance(int cpu_usage){
-    if(cpu_usage < 85)
+    if(cpu_usage < DOWN_PERFORMANCE)
         set_governor(ONDEMAND);
 }
 
