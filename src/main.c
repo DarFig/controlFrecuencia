@@ -44,6 +44,8 @@ int main(int argc, char *argv[]){
     }
 
     fclose(file);
+    if(actualConfig == CORES_OCHO )
+        switch_cores();
     set_governor(ONDEMAND);//default on servers
 
     return 0;
