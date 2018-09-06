@@ -14,7 +14,8 @@
 #define SALTO_ATRAS -3 
 #define HIJO 0
 
-int check_switch = 0; 
+
+int check_usage0 = 0;//evita bajar de frecuencia por un 0 irregular 
 
 //configs cres
 enum {CORES_OCHO, CORES_ALL};
@@ -129,21 +130,16 @@ void set_frequency(int _frequencyFlag){
 
 void switch_cores(){
     if(actualConfig != CORES_OCHO){
-        if(check_switch){
-            set_frequency(DOS_GHZ);
-            int pidd = fork();
-            if (pidd < 0) exit(1);
-            if(pidd == HIJO){ 
-                execl("./tools/cores_down.sh", "",NULL); exit(0);
-            }
-            sleep(5);
-            actualConfig = CORES_OCHO;
-            check_switch = 0;
-        }else{
-            sleep(20);
-            check_switch = 1;
+      
+        set_frequency(DOS_GHZ);
+        int pidd = fork();
+        if (pidd < 0) exit(1);
+        if(pidd == HIJO){ 
+            execl("./tools/cores_down.sh", "",NULL); exit(0);
         }
-
+        sleep(5);
+        actualConfig = CORES_OCHO;
+      
     }else{
         int pidd = fork();
         if (pidd < 0) exit(1);
@@ -164,18 +160,14 @@ static void run_decisions_uno(int cpu_usage){
 static void run_decisions_uno_cinco(int cpu_usage){
     if(cpu_usage < 10){       
         switch_cores();
-    }else if(cpu_usage > 80){
+    }else if(cpu_usage > 85){
         set_frequency(DOS_GHZ);
-    }
-    
-    if(cpu_usage > 10 && check_switch == 1)
-        check_switch = 0;
-    
+    } 
 }
 static void run_decisions_dos(int cpu_usage){
     if(cpu_usage < 40){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 90){
+    }else if(cpu_usage > 98){
         set_governor(ONDEMAND);
     }
 }
@@ -189,8 +181,7 @@ static void run_decisions_ondemand(int cpu_usage){
     if(cpu_usage < 75){
         set_governor(USERSPACE);
         set_frequency(DOS_GHZ);
-    }//else if(cpu_usage > 89)
-      //  set_governor(PERFORMANCE);
+    }
 }
 static void run_decisions_performance(int cpu_usage){
     if(cpu_usage < 85)
@@ -200,27 +191,33 @@ static void run_decisions_performance(int cpu_usage){
 void run_decisions_model(int cpu_usage){
     if(actualConfig == CORES_OCHO){
         run_decisions_cores(cpu_usage);
-    }else if(actualGovernor == USERSPACE){
-        switch (actualFrequency)
-        {   
-            case UN_GHZ:
-                run_decisions_uno(cpu_usage);
-                break;
-            case UNO_CINCO_GHZ:
-                run_decisions_uno_cinco(cpu_usage);
-                break;
-            case DOS_GHZ:
-                run_decisions_dos(cpu_usage);
-                break;    
-            default:
-                break;
-        }      
-    }else if(actualGovernor == ONDEMAND){
-        run_decisions_ondemand(cpu_usage);     
-    }else if(actualGovernor == PERFORMANCE){
-        run_decisions_performance(cpu_usage);      
+    }else if(cpu_usage != 0 || check_usage0 == 1){
+        check_usage0 = 0;
+        if(actualGovernor == USERSPACE){
+            switch (actualFrequency)
+            {   
+                case UN_GHZ:
+                    run_decisions_uno(cpu_usage);
+                    break;
+                case UNO_CINCO_GHZ:
+                    run_decisions_uno_cinco(cpu_usage);
+                    break;
+                case DOS_GHZ:
+                    run_decisions_dos(cpu_usage);
+                    break;    
+                default:
+                    break;
+            }      
+        }else if(actualGovernor == ONDEMAND){
+            run_decisions_ondemand(cpu_usage);     
+        }else if(actualGovernor == PERFORMANCE){
+            run_decisions_performance(cpu_usage);      
+        }
+        
+    }else if(cpu_usage == 0){
+        check_usage0 = 1;
+        sleep(20);
     }
-   
 
 }
 
