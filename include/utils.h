@@ -123,15 +123,27 @@ void set_frequency(int _frequencyFlag){
     }
 }
 
+static int check_switch(){
+    int pidd = fork();
+    if (pidd < 0) exit(1);
+    if(pidd == HIJO){ execl("./tools/obtenerUso.sh", "",NULL); exit(0);}
+    sleep(20);
+        
+    return (read_last_line_from_log("./files/log.txt") < 10);
+
+}
 void switch_cores(){
     if(actualConfig != CORES_OCHO){
-        int pidd = fork();
-        if (pidd < 0) exit(1);
-        if(pidd == HIJO){ 
-            execl("./tools/cores_down.sh", "",NULL); exit(0);
+        if(check_switch()){
+            set_frequency(DOS_GHZ);
+            int pidd = fork();
+            if (pidd < 0) exit(1);
+            if(pidd == HIJO){ 
+                execl("./tools/cores_down.sh", "",NULL); exit(0);
+            }
+            sleep(5);
+            actualConfig = CORES_OCHO;
         }
-        sleep(5);
-        actualConfig = CORES_OCHO;
     }else{
         int pidd = fork();
         if (pidd < 0) exit(1);
@@ -140,6 +152,7 @@ void switch_cores(){
         }
         sleep(5);
         actualConfig = CORES_ALL;
+        set_frequency(UNO_CINCO_GHZ);
     }
 
 }
@@ -149,24 +162,23 @@ static void run_decisions_uno(int cpu_usage){
     } 
 }
 static void run_decisions_uno_cinco(int cpu_usage){
-    if(cpu_usage < 35){
-        set_frequency(DOS_GHZ);
+    if(cpu_usage < 10){       
         switch_cores();
-    }else if(cpu_usage > 96){
+    }else if(cpu_usage > 80){
         set_frequency(DOS_GHZ);
     }
 }
 static void run_decisions_dos(int cpu_usage){
-    if(cpu_usage < 56){
+    if(cpu_usage < 40){
         set_frequency(UNO_CINCO_GHZ);
-    }else if(cpu_usage > 77){//bueno
+    }else if(cpu_usage > 90){
         set_governor(ONDEMAND);
     }
 }
 static void run_decisions_cores(int cpu_usage){
-    if(cpu_usage > 90){
+    if(cpu_usage > 80){
         switch_cores();
-        set_frequency(UNO_CINCO_GHZ);
+        
     }        
 }
 static void run_decisions_ondemand(int cpu_usage){
