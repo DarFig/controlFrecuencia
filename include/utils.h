@@ -167,6 +167,10 @@ static void run_decisions_uno_cinco(int cpu_usage){
     }else if(cpu_usage > 80){
         set_frequency(DOS_GHZ);
     }
+    
+    if(cpu_usage > 10 && check_switch == 1)
+        check_switch = 0;
+    
 }
 static void run_decisions_dos(int cpu_usage){
     if(cpu_usage < 40){
