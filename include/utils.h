@@ -14,6 +14,8 @@
 #define SALTO_ATRAS -3 
 #define HIJO 0
 
+int check_switch = 0; 
+
 //configs cres
 enum {CORES_OCHO, CORES_ALL};
 
@@ -123,18 +125,11 @@ void set_frequency(int _frequencyFlag){
     }
 }
 
-static int check_switch(){
-    int pidd = fork();
-    if (pidd < 0) exit(1);
-    if(pidd == HIJO){ execl("./tools/obtenerUso.sh", "",NULL); exit(0);}
-    sleep(20);
-        
-    return (read_last_line_from_log("./files/log.txt") < 10);
 
-}
+
 void switch_cores(){
     if(actualConfig != CORES_OCHO){
-        if(check_switch()){
+        if(check_switch){
             set_frequency(DOS_GHZ);
             int pidd = fork();
             if (pidd < 0) exit(1);
@@ -143,7 +138,12 @@ void switch_cores(){
             }
             sleep(5);
             actualConfig = CORES_OCHO;
+            check_switch = 0;
+        }else{
+            sleep(20);
+            check_switch = 1;
         }
+
     }else{
         int pidd = fork();
         if (pidd < 0) exit(1);
