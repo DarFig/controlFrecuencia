@@ -20,10 +20,7 @@ int main(int argc, char *argv[]){
 
     while(continuar){
         
-        int pid = fork();
-        if (pid < 0) exit(1);
-        if(pid == HIJO){ execl("./tools/obtenerUso.sh", "",NULL); exit(0);}
-        
+        run_tool("./tools/obtenerUso.sh");
         
         sleep(15);
         
