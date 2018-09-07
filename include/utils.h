@@ -192,7 +192,7 @@ static void run_decisions_performance(int cpu_usage){
 void run_decisions_model(int cpu_usage){
     if(actualConfig == CORES_OCHO){
         run_decisions_cores(cpu_usage);
-    }else if(cpu_usage != 0 || check_usage0 == 1){
+    }else if(cpu_usage > DOWN_ONE_FIVE || check_usage0 == 1){
         check_usage0 = 0;
         if(actualGovernor == USERSPACE){
             switch (actualFrequency)
@@ -215,7 +215,7 @@ void run_decisions_model(int cpu_usage){
             run_decisions_performance(cpu_usage);      
         }
         
-    }else if(cpu_usage == 0){
+    }else if(cpu_usage <= DOWN_ONE_FIVE){
         check_usage0 = 1;
         sleep(20);
     }
