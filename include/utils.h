@@ -16,7 +16,7 @@
 #define HIJO 0
 
 
-int check_usage0 = 0;//evita bajar de frecuencia por un 0 irregular 
+
 
 //configs cres
 enum {CORES_OCHO, CORES_ALL};
@@ -27,9 +27,11 @@ enum {POWERSAVE = 0, USERSPACE = 1, ONDEMAND = 2, PERFORMANCE = 3};
 //some cpu frequencies
 enum {UN_GHZ = 1, UNO_CINCO_GHZ = 2, DOS_GHZ = 3, OTHER = 4};
 
+
 static int actualGovernor = ONDEMAND;
 static int actualFrequency = OTHER;
 static int actualConfig = CORES_ALL;
+static int check_usage0 = 0;//evita bajar de frecuencia por un 0 irregular 
 
 
 
@@ -192,7 +194,7 @@ static void run_decisions_performance(int cpu_usage){
 void run_decisions_model(int cpu_usage){
     if(actualConfig == CORES_OCHO){
         run_decisions_cores(cpu_usage);
-    }else if(cpu_usage > DOWN_ONE_FIVE || check_usage0 == 1){
+    }else if(cpu_usage > SLEEP_LIMIT || check_usage0 == 1){
         check_usage0 = 0;
         if(actualGovernor == USERSPACE){
             switch (actualFrequency)
@@ -215,7 +217,7 @@ void run_decisions_model(int cpu_usage){
             run_decisions_performance(cpu_usage);      
         }
         
-    }else if(cpu_usage <= DOWN_ONE_FIVE){
+    }else if(cpu_usage <= SLEEP_LIMIT){
         check_usage0 = 1;
         sleep(20);
     }

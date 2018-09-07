@@ -8,11 +8,8 @@ int main(int argc, char *argv[]){
         perror("signal");
         exit(-1);
     }
-   
-
-    int prueba = 1, i = 0; 
+    
     int usoCPU;
-
     FILE *file;
 
     const char logs_file[] = "./files/log.txt";
@@ -27,22 +24,15 @@ int main(int argc, char *argv[]){
         if (pid < 0) exit(1);
         if(pid == HIJO){ execl("./tools/obtenerUso.sh", "",NULL); exit(0);}
         
-        //main process
         
-
-
         sleep(15);
         
         
         usoCPU = read_last_line_from_log(file);
-        //printf("CPU %d\n", usoCPU);
-        run_decisions_model(usoCPU);
-
-
-        
+        run_decisions_model(usoCPU);      
         
     }
-
+    
     fclose(file);
     if(actualConfig == CORES_OCHO )
         switch_cores();

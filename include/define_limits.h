@@ -4,13 +4,15 @@
  *   To define the limits of change between frequencies
 */
 
+#define SLEEP_LIMIT 10
+
 #define UP_ONE 36
 
 
 #define UP_ONE_FIVE 75
 #define DOWN_ONE_FIVE 10
 
-#define UP_DOS 98
+#define UP_DOS 97
 #define DOWN_DOS 40
 
 
